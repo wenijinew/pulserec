@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String        @id @default(cuid())
+  name      String
+  email     String        @unique
+  avatar    String?
+  createdAt DateTime      @default(now())
+  sports    UserSport[]
+  records   DailyRecord[]
+}
+
+model Sport {
+  id         String        @id @default(cuid())
+  name       String        @unique
+  icon       String
+  parameters Json
+  users      UserSport[]
+  records    DailyRecord[]
+}
+
+model UserSport {
+  user     User    @relation(fields: [userId], references: [id])
+  userId   String
+  sport    Sport   @relation(fields: [sportId], references: [id])
+  sportId  String
+  isPublic Boolean @default(true)
+
+  @@id([userId, sportId])
+}
+
+model DailyRecord {
+  id      String   @id @default(cuid())
+  user    User     @relation(fields: [userId], references: [id])
+  userId  String
+  sport   Sport    @relation(fields: [sportId], references: [id])
+  sportId String
+  date    DateTime @db.Date
+  values  Json
+
+  @@unique([userId, sportId, date])
+}
