@@ -51,7 +51,7 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
           onClick={() => setZoomed(false)}
         >
           <motion.div
@@ -207,9 +207,9 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
               ))}
               <button
                 onClick={handleSave}
-                className="mt-2 w-full rounded-xl bg-accent py-2.5 text-sm font-semibold text-black active:scale-95"
+                className="mt-2 w-full rounded-xl bg-accent py-3 text-base font-bold text-black shadow-lg shadow-accent/25 active:scale-95"
               >
-                Save
+                💾 Save
               </button>
             </div>
           </motion.div>
