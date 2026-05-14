@@ -24,23 +24,25 @@ export default function RecordPage() {
   };
 
   return (
-    <main className="mx-auto max-w-md space-y-3 px-4 py-12">
+    <main className="mx-auto max-w-2xl space-y-6 px-4 py-12">
       <div className="mb-6 flex items-center gap-3">
         <span className="text-3xl">{sport.icon}</span>
         <div>
           <h1 className="text-2xl font-bold">{sport.name}</h1>
-          <p className="text-sm text-neutral-500">Tap a card to record your stats</p>
+          <p className="text-sm text-neutral-500">Pick a card to record your stats</p>
         </div>
       </div>
 
-      {Array.from({ length: 10 }).map((_, i) => (
-        <RecordCard
-          key={i}
-          index={i}
-          sport={sport}
-          onSave={(values, name) => handleSave(i, values, name)}
-        />
-      ))}
+      <div className="flex flex-wrap justify-center gap-3">
+        {Array.from({ length: 10 }).map((_, i) => (
+          <RecordCard
+            key={i}
+            index={i}
+            sport={sport}
+            onSave={(values, name) => handleSave(i, values, name)}
+          />
+        ))}
+      </div>
     </main>
   );
 }

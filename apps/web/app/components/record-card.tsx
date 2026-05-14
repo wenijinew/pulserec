@@ -24,48 +24,61 @@ export function RecordCard({ index, sport, onSave }: RecordCardProps) {
     setExpanded(false);
   };
 
+  const suits = ["♠", "♥", "♦", "♣"];
+  const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+  const suit = suits[index % 4];
+  const rank = ranks[index];
+  const isRed = suit === "♥" || suit === "♦";
+
   if (saved) {
     return (
-      <div className="rounded-2xl border border-accent/30 bg-accent/5 p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-accent">✓</span>
-            <span className="text-sm font-medium">{name || `Record ${index + 1}`}</span>
-          </div>
-          <div className="flex gap-2 text-xs text-neutral-500">
+      <div className="relative h-48 w-32 rounded-xl border-2 border-accent/40 bg-gradient-to-br from-neutral-900 to-neutral-950 p-3 shadow-lg">
+        <div className={`absolute left-2 top-2 text-xs font-bold ${isRed ? "text-red-500" : "text-white"}`}>
+          {rank}<br />{suit}
+        </div>
+        <div className="flex h-full flex-col items-center justify-center">
+          <span className="text-accent text-lg">✓</span>
+          <span className="mt-1 text-[10px] font-medium text-neutral-400">{name || "Saved"}</span>
+          <div className="mt-2 space-y-0.5 text-center">
             {sport.fields.slice(0, 3).map((f) => (
-              <span key={f.name}>{values[f.name]} {f.unit}</span>
+              <div key={f.name} className="text-[9px] text-neutral-500">{values[f.name]} {f.unit}</div>
             ))}
           </div>
+        </div>
+        <div className={`absolute bottom-2 right-2 rotate-180 text-xs font-bold ${isRed ? "text-red-500" : "text-white"}`}>
+          {rank}<br />{suit}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="rounded-2xl bg-neutral-900 transition-all">
-      {/* Collapsed: blank card */}
+    <div className="relative">
+      {/* Poker card face */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="flex w-full items-center justify-between px-5 py-4 text-left"
+        className={[
+          "relative h-48 w-32 rounded-xl border-2 transition-all shadow-lg",
+          expanded
+            ? "border-accent bg-gradient-to-br from-neutral-800 to-neutral-900"
+            : "border-neutral-700 bg-gradient-to-br from-neutral-900 to-neutral-950 hover:border-neutral-500 hover:shadow-xl active:scale-95",
+        ].join(" ")}
       >
-        <div className="flex items-center gap-3">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-neutral-800 text-sm font-bold text-neutral-500">
-            {index + 1}
-          </span>
-          <span className="text-sm text-neutral-500">
-            {expanded ? "Fill in your stats" : "Tap to record"}
+        <div className={`absolute left-2 top-2 text-xs font-bold ${isRed ? "text-red-500" : "text-white"}`}>
+          {rank}<br />{suit}
+        </div>
+        <div className="flex h-full flex-col items-center justify-center">
+          <span className={`text-4xl ${isRed ? "text-red-500/30" : "text-white/20"}`}>{suit}</span>
+          <span className="mt-2 text-[10px] text-neutral-500">
+            {expanded ? "Fill stats ↓" : "Tap to play"}
           </span>
         </div>
-        <motion.span
-          animate={{ rotate: expanded ? 180 : 0 }}
-          className="text-neutral-600"
-        >
-          ▾
-        </motion.span>
+        <div className={`absolute bottom-2 right-2 rotate-180 text-xs font-bold ${isRed ? "text-red-500" : "text-white"}`}>
+          {rank}<br />{suit}
+        </div>
       </button>
 
-      {/* Expanded: inputs */}
+      {/* Expanded: inputs panel */}
       <AnimatePresence>
         {expanded && (
           <motion.div
@@ -73,10 +86,9 @@ export function RecordCard({ index, sport, onSave }: RecordCardProps) {
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="overflow-hidden"
+            className="mt-2 overflow-hidden rounded-xl bg-neutral-900 border border-neutral-800"
           >
-            <div className="space-y-3 px-5 pb-5">
-              {/* Name input */}
+            <div className="space-y-3 p-4">
               <input
                 type="text"
                 placeholder="Your name"
@@ -85,8 +97,6 @@ export function RecordCard({ index, sport, onSave }: RecordCardProps) {
                 className="w-full rounded-lg bg-neutral-800 px-3 py-2 text-sm text-white placeholder-neutral-600 outline-none focus:ring-2 focus:ring-accent"
                 aria-label="Your name"
               />
-
-              {/* Stat fields */}
               {sport.fields.map((field) => (
                 <div key={field.name} className="flex items-center justify-between">
                   <label htmlFor={`${index}-${field.name}`} className="text-sm text-neutral-400">
@@ -108,8 +118,6 @@ export function RecordCard({ index, sport, onSave }: RecordCardProps) {
                   </div>
                 </div>
               ))}
-
-              {/* Save button */}
               <button
                 onClick={handleSave}
                 className="mt-2 w-full rounded-xl bg-accent py-2.5 text-sm font-semibold text-black active:scale-95"
