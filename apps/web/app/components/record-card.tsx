@@ -32,6 +32,13 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
   const rank = ranks[index];
   const isRed = suit === "♥" || suit === "♦";
 
+  // Sci-fi glyphs and patterns instead of poker suits
+  const glyphs = ["◈", "⬡", "△", "◎", "⟐", "⬢", "▽", "◇", "⏣", "⟡"];
+  const codes = ["Σ-01", "Ω-02", "Δ-03", "Ψ-04", "Λ-05", "Θ-06", "Ξ-07", "Φ-08", "Π-09", "Γ-10"];
+  const glyph = glyphs[index];
+  const code = codes[index];
+  const hueRotate = index * 36; // each card slightly different hue
+
   // Zoom icon button (top-right of card)
   const ZoomIcon = () => (
     <button
@@ -72,13 +79,13 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
             </button>
 
             {/* Card content */}
-            <div className={`text-lg font-bold ${isRed ? "text-red-400" : "text-cyan-300"}`}>
-              {rank} {suit}
+            <div className="text-lg font-bold font-mono text-cyan-300">
+              {glyph} {code}
             </div>
 
             <div className="mt-6 flex flex-col items-center">
-              <span className={`text-6xl ${isRed ? "text-red-500/40" : "text-white/20"}`}>{suit}</span>
-              <span className="mt-3 text-xs uppercase tracking-widest text-neutral-500">{sport.name}</span>
+              <span className="text-6xl text-cyan-500/30">{glyph}</span>
+              <span className="mt-3 text-xs uppercase tracking-widest font-mono text-cyan-700">{sport.name}</span>
             </div>
 
             {saved ? (
@@ -99,8 +106,8 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
               </div>
             )}
 
-            <div className={`absolute bottom-4 right-4 rotate-180 text-lg font-bold ${isRed ? "text-red-500" : "text-white"}`}>
-              {rank} {suit}
+            <div className="absolute bottom-4 right-4 rotate-180 text-lg font-bold font-mono text-cyan-700">
+              {glyph}
             </div>
           </motion.div>
         </motion.div>
@@ -116,8 +123,8 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
           onClick={() => { setSaved(false); setExpanded(true); }}
           className="relative h-48 w-32 rounded-xl border border-cyan-500/40 bg-gradient-to-br from-[#0a0f1a] via-[#0d1525] to-[#0a1a2a] p-3 shadow-[0_0_20px_rgba(0,229,255,0.1)] hover:shadow-[0_0_30px_rgba(0,229,255,0.2)] active:scale-95 transition-all"
         >
-          <div className={`absolute left-2 top-2 text-xs font-bold font-mono ${isRed ? "text-red-400" : "text-cyan-400"}`}>
-            {rank}<br />{suit}
+          <div className="absolute left-2 top-2 text-[9px] font-bold font-mono text-cyan-500">
+            {code}<br />{glyph}
           </div>
           <div className="flex h-full flex-col items-center justify-center">
             <span className="text-cyan-400 text-lg">✓</span>
@@ -129,8 +136,8 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
             </div>
             <span className="mt-2 text-[8px] text-cyan-800">tap to edit</span>
           </div>
-          <div className={`absolute bottom-2 right-2 rotate-180 text-xs font-bold font-mono ${isRed ? "text-red-400" : "text-cyan-400"}`}>
-            {rank}<br />{suit}
+          <div className="absolute bottom-2 right-2 rotate-180 text-[9px] font-bold font-mono text-cyan-700">
+            {glyph}
           </div>
         </button>
         <ZoomModal />
@@ -151,17 +158,17 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
             : "border-cyan-900/50 bg-gradient-to-br from-[#0a0f1a] via-[#0d1525] to-[#0a1a2a] hover:border-cyan-600/50 hover:shadow-[0_0_20px_rgba(0,229,255,0.15)] active:scale-95",
         ].join(" ")}
       >
-        <div className={`absolute left-2 top-2 text-xs font-bold font-mono ${isRed ? "text-red-400" : "text-cyan-400"}`}>
-          {rank}<br />{suit}
+        <div className="absolute left-2 top-2 text-[9px] font-bold font-mono text-cyan-500">
+          {code}<br />{glyph}
         </div>
         <div className="flex h-full flex-col items-center justify-center">
-          <span className={`text-4xl ${isRed ? "text-red-500/20" : "text-cyan-500/20"}`}>{suit}</span>
+          <span className="text-4xl text-cyan-500/20">{glyph}</span>
           <span className="mt-2 text-[10px] font-mono text-cyan-700">
             {expanded ? "Fill stats ↓" : "Tap to play"}
           </span>
         </div>
-        <div className={`absolute bottom-2 right-2 rotate-180 text-xs font-bold font-mono ${isRed ? "text-red-400" : "text-cyan-400"}`}>
-          {rank}<br />{suit}
+        <div className="absolute bottom-2 right-2 rotate-180 text-[9px] font-bold font-mono text-cyan-700">
+          {glyph}
         </div>
       </button>
 
