@@ -88,58 +88,40 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
               <span className="mt-2 text-xs uppercase tracking-widest font-mono text-cyan-700">{sport.name}</span>
             </div>
 
-            {/* Edit form */}
-            {expanded ? (
-              <div className="mt-5 space-y-3">
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-lg bg-cyan-950/40 border border-cyan-800/30 px-3 py-2 text-sm font-mono text-white placeholder-cyan-800 outline-none focus:ring-2 focus:ring-cyan-500"
-                  aria-label="Your name"
-                />
-                {sport.fields.map((field) => (
-                  <div key={field.name} className="flex items-center justify-between">
-                    <label className="text-xs font-mono text-cyan-400">{field.label}</label>
-                    <div className="flex items-center gap-1">
-                      <input
-                        type="number"
-                        min={field.min}
-                        max={field.max}
-                        step={field.step ?? 1}
-                        value={values[field.name] ?? 0}
-                        onChange={(e) => setValues((v) => ({ ...v, [field.name]: parseFloat(e.target.value) || 0 }))}
-                        className="w-16 rounded-lg bg-cyan-950/40 border border-cyan-800/30 px-2 py-1.5 text-right text-sm font-mono font-semibold text-white outline-none focus:ring-2 focus:ring-cyan-500"
-                      />
-                      <span className="w-8 text-[10px] font-mono text-cyan-700">{field.unit}</span>
-                    </div>
+            {/* Edit form — always available */}
+            <div className="mt-5 space-y-3">
+              <input
+                type="text"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full rounded-lg bg-cyan-950/40 border border-cyan-800/30 px-3 py-2 text-sm font-mono text-white placeholder-cyan-800 outline-none focus:ring-2 focus:ring-cyan-500"
+                aria-label="Your name"
+              />
+              {sport.fields.map((field) => (
+                <div key={field.name} className="flex items-center justify-between">
+                  <label className="text-xs font-mono text-cyan-400">{field.label}</label>
+                  <div className="flex items-center gap-1">
+                    <input
+                      type="number"
+                      min={field.min}
+                      max={field.max}
+                      step={field.step ?? 1}
+                      value={values[field.name] ?? 0}
+                      onChange={(e) => setValues((v) => ({ ...v, [field.name]: parseFloat(e.target.value) || 0 }))}
+                      className="w-16 rounded-lg bg-cyan-950/40 border border-cyan-800/30 px-2 py-1.5 text-right text-sm font-mono font-semibold text-white outline-none focus:ring-2 focus:ring-cyan-500"
+                    />
+                    <span className="w-8 text-[10px] font-mono text-cyan-700">{field.unit}</span>
                   </div>
-                ))}
-                <button
-                  onClick={() => { handleSave(); setZoomed(false); setExpanded(false); }}
-                  className="mt-3 w-full rounded-xl bg-cyan-500 py-3 text-base font-bold text-black shadow-lg shadow-cyan-500/25 active:scale-95"
-                >
-                  💾 Save
-                </button>
-              </div>
-            ) : saved ? (
-              <div className="mt-5 space-y-2">
-                <p className="text-center text-sm font-mono font-medium text-cyan-300">{name || "Player"}</p>
-                <div className="grid grid-cols-2 gap-2">
-                  {sport.fields.map((f) => (
-                    <div key={f.name} className="rounded-lg bg-cyan-950/30 p-2 text-center">
-                      <div className="text-lg font-bold font-mono text-cyan-200">{values[f.name] ?? 0}</div>
-                      <div className="text-[10px] font-mono text-cyan-600">{f.label}</div>
-                    </div>
-                  ))}
                 </div>
-              </div>
-            ) : (
-              <div className="mt-8 text-center text-sm font-mono text-cyan-800">
-                No stats recorded yet.
-              </div>
-            )}
+              ))}
+              <button
+                onClick={() => { handleSave(); setZoomed(false); }}
+                className="mt-3 w-full rounded-xl bg-cyan-500 py-3 text-base font-bold text-black shadow-lg shadow-cyan-500/25 active:scale-95"
+              >
+                💾 Save
+              </button>
+            </div>
           </motion.div>
         </motion.div>
       )}
@@ -151,7 +133,7 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
       <div className="relative">
         <ZoomIcon />
         <button
-          onClick={() => { setSaved(false); setExpanded(true); }}
+          onClick={() => setZoomed(true)}
           className="relative h-48 w-32 rounded-xl border border-cyan-500/40 bg-gradient-to-br from-[#0a0f1a] via-[#0d1525] to-[#0a1a2a] p-3 shadow-[0_0_20px_rgba(0,229,255,0.1)] hover:shadow-[0_0_30px_rgba(0,229,255,0.2)] active:scale-95 transition-all"
         >
           <div className="absolute left-2 top-2 text-[9px] font-bold font-mono text-cyan-500">
@@ -181,13 +163,8 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
       <ZoomIcon />
       {/* Poker card face */}
       <button
-        onClick={() => setExpanded(!expanded)}
-        className={[
-          "relative h-48 w-32 rounded-xl border transition-all",
-          expanded
-            ? "border-cyan-400/60 bg-gradient-to-br from-[#0a1520] via-[#0d1a2a] to-[#0a2030] shadow-[0_0_25px_rgba(0,229,255,0.2)]"
-            : "border-cyan-900/50 bg-gradient-to-br from-[#0a0f1a] via-[#0d1525] to-[#0a1a2a] hover:border-cyan-600/50 hover:shadow-[0_0_20px_rgba(0,229,255,0.15)] active:scale-95",
-        ].join(" ")}
+        onClick={() => setZoomed(true)}
+        className="relative h-48 w-32 rounded-xl border border-cyan-900/50 bg-gradient-to-br from-[#0a0f1a] via-[#0d1525] to-[#0a1a2a] hover:border-cyan-600/50 hover:shadow-[0_0_20px_rgba(0,229,255,0.15)] active:scale-95 transition-all"
       >
         <div className="absolute left-2 top-2 text-[9px] font-bold font-mono text-cyan-500">
           {code}<br />{glyph}
@@ -202,54 +179,6 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
           {glyph}
         </div>
       </button>
-
-      {/* Inline edit form */}
-      <AnimatePresence>
-        {expanded && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="mt-2 overflow-hidden rounded-xl bg-[#0a1018] border border-cyan-900/40"
-          >
-            <div className="space-y-3 p-4">
-              <input
-                type="text"
-                placeholder="Your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-lg bg-cyan-950/40 border border-cyan-800/30 px-3 py-2 text-sm font-mono text-white placeholder-cyan-800 outline-none focus:ring-2 focus:ring-cyan-500"
-                aria-label="Your name"
-              />
-              {sport.fields.map((field) => (
-                <div key={field.name} className="flex items-center justify-between">
-                  <label className="text-xs font-mono text-cyan-400">{field.label}</label>
-                  <div className="flex items-center gap-1">
-                    <input
-                      type="number"
-                      min={field.min}
-                      max={field.max}
-                      step={field.step ?? 1}
-                      value={values[field.name] ?? 0}
-                      onChange={(e) => setValues((v) => ({ ...v, [field.name]: parseFloat(e.target.value) || 0 }))}
-                      className="w-16 rounded-lg bg-cyan-950/40 border border-cyan-800/30 px-2 py-1.5 text-right text-sm font-mono font-semibold text-white outline-none focus:ring-2 focus:ring-cyan-500"
-                    />
-                    <span className="w-8 text-[10px] font-mono text-cyan-700">{field.unit}</span>
-                  </div>
-                </div>
-              ))}
-              <button
-                onClick={handleSave}
-                className="mt-2 w-full rounded-xl bg-cyan-500 py-3 text-base font-bold text-black shadow-lg shadow-cyan-500/25 active:scale-95"
-              >
-                💾 Save
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <ZoomModal />
     </div>
   );
