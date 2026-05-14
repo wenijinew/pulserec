@@ -5,6 +5,22 @@ import { useSearchParams } from "next/navigation";
 import { getSportConfig, sportsConfig } from "@pulserec/db";
 import { RecordCard } from "../components/record-card";
 
+function getStorageKey(sportId: string) {
+  return `pulserec-records-${sportId}`;
+}
+
+function loadRecords(sportId: string): Record<number, { values: Record<string, number>; name: string }> {
+  if (typeof window === "undefined") return {};
+  const raw = localStorage.getItem(getStorageKey(sportId));
+  return raw ? JSON.parse(raw) : {};
+}
+
+function saveRecord(sportId: string, index: number, values: Record<string, number>, name: string) {
+  const records = loadRecords(sportId);
+  records[index] = { values, name };
+  localStorage.setItem(getStorageKey(sportId), JSON.stringify(records));
+}
+
 export default function RecordPage() {
   const searchParams = useSearchParams();
   const sportId = searchParams.get("sport") ?? sportsConfig[0]?.id ?? "";
@@ -18,9 +34,10 @@ export default function RecordPage() {
     );
   }
 
+  const savedRecords = loadRecords(sportId);
+
   const handleSave = (index: number, values: Record<string, number>, name: string) => {
-    // TODO: persist via tRPC
-    console.log(`Card ${index + 1} saved:`, { sport: sportId, name, values });
+    saveRecord(sportId, index, values, name);
   };
 
   return (
@@ -39,6 +56,7 @@ export default function RecordPage() {
             key={i}
             index={i}
             sport={sport}
+            savedData={savedRecords[i]}
             onSave={(values, name) => handleSave(i, values, name)}
           />
         ))}

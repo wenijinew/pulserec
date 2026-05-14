@@ -7,15 +7,16 @@ import type { SportConfig } from "@pulserec/db";
 interface RecordCardProps {
   index: number;
   sport: SportConfig;
+  savedData?: { values: Record<string, number>; name: string };
   onSave: (values: Record<string, number>, name: string) => void;
 }
 
-export function RecordCard({ index, sport, onSave }: RecordCardProps) {
+export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps) {
   const [expanded, setExpanded] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [name, setName] = useState("");
+  const [saved, setSaved] = useState(!!savedData);
+  const [name, setName] = useState(savedData?.name ?? "");
   const [values, setValues] = useState<Record<string, number>>(() =>
-    Object.fromEntries(sport.fields.map((f) => [f.name, 0]))
+    savedData?.values ?? Object.fromEntries(sport.fields.map((f) => [f.name, 0]))
   );
 
   const handleSave = () => {
