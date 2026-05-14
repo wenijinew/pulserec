@@ -36,7 +36,7 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
   const ZoomIcon = () => (
     <button
       onClick={(e) => { e.stopPropagation(); setZoomed(true); }}
-      className="absolute right-1.5 top-1.5 z-10 flex h-5 w-5 items-center justify-center rounded-md bg-neutral-800/80 text-[10px] text-neutral-400 hover:bg-neutral-700 hover:text-white transition-colors"
+      className="absolute right-1.5 top-1.5 z-10 flex h-5 w-5 items-center justify-center rounded bg-cyan-900/60 text-[10px] text-cyan-400 hover:bg-cyan-800/80 hover:text-cyan-200 transition-colors border border-cyan-500/30"
       aria-label="Zoom card"
     >
       ⛶
@@ -60,19 +60,19 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
             exit={{ scale: 0.5, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
             onClick={(e) => e.stopPropagation()}
-            className="relative h-[420px] w-[280px] rounded-2xl border-2 border-accent/50 bg-gradient-to-br from-neutral-900 to-neutral-950 p-6 shadow-2xl"
+            className="relative h-[420px] w-[280px] rounded-2xl border border-cyan-500/40 bg-gradient-to-br from-[#0a0f1a] via-[#0d1525] to-[#0a1a2a] p-6 shadow-[0_0_40px_rgba(0,229,255,0.15)]"
           >
             {/* Close button */}
             <button
               onClick={() => setZoomed(false)}
-              className="absolute right-3 top-3 text-neutral-500 hover:text-white text-lg"
+              className="absolute right-3 top-3 text-cyan-700 hover:text-cyan-300 text-lg"
               aria-label="Close"
             >
               ✕
             </button>
 
             {/* Card content */}
-            <div className={`text-lg font-bold ${isRed ? "text-red-500" : "text-white"}`}>
+            <div className={`text-lg font-bold ${isRed ? "text-red-400" : "text-cyan-300"}`}>
               {rank} {suit}
             </div>
 
@@ -114,22 +114,22 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
         <ZoomIcon />
         <button
           onClick={() => { setSaved(false); setExpanded(true); }}
-          className="relative h-48 w-32 rounded-xl border-2 border-accent/40 bg-gradient-to-br from-neutral-900 to-neutral-950 p-3 shadow-lg hover:border-accent/70 active:scale-95 transition-all"
+          className="relative h-48 w-32 rounded-xl border border-cyan-500/40 bg-gradient-to-br from-[#0a0f1a] via-[#0d1525] to-[#0a1a2a] p-3 shadow-[0_0_20px_rgba(0,229,255,0.1)] hover:shadow-[0_0_30px_rgba(0,229,255,0.2)] active:scale-95 transition-all"
         >
-          <div className={`absolute left-2 top-2 text-xs font-bold ${isRed ? "text-red-500" : "text-white"}`}>
+          <div className={`absolute left-2 top-2 text-xs font-bold font-mono ${isRed ? "text-red-400" : "text-cyan-400"}`}>
             {rank}<br />{suit}
           </div>
           <div className="flex h-full flex-col items-center justify-center">
-            <span className="text-accent text-lg">✓</span>
-            <span className="mt-1 text-[10px] font-medium text-neutral-400">{name || "Saved"}</span>
+            <span className="text-cyan-400 text-lg">✓</span>
+            <span className="mt-1 text-[10px] font-mono font-medium text-cyan-300/70">{name || "Saved"}</span>
             <div className="mt-2 space-y-0.5 text-center">
               {sport.fields.slice(0, 3).map((f) => (
-                <div key={f.name} className="text-[9px] text-neutral-500">{values[f.name]} {f.unit}</div>
+                <div key={f.name} className="text-[9px] font-mono text-cyan-600">{values[f.name]} {f.unit}</div>
               ))}
             </div>
-            <span className="mt-2 text-[8px] text-neutral-600">tap to edit</span>
+            <span className="mt-2 text-[8px] text-cyan-800">tap to edit</span>
           </div>
-          <div className={`absolute bottom-2 right-2 rotate-180 text-xs font-bold ${isRed ? "text-red-500" : "text-white"}`}>
+          <div className={`absolute bottom-2 right-2 rotate-180 text-xs font-bold font-mono ${isRed ? "text-red-400" : "text-cyan-400"}`}>
             {rank}<br />{suit}
           </div>
         </button>
@@ -145,22 +145,22 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
       <button
         onClick={() => setExpanded(!expanded)}
         className={[
-          "relative h-48 w-32 rounded-xl border-2 transition-all shadow-lg",
+          "relative h-48 w-32 rounded-xl border transition-all",
           expanded
-            ? "border-accent bg-gradient-to-br from-neutral-800 to-neutral-900"
-            : "border-neutral-700 bg-gradient-to-br from-neutral-900 to-neutral-950 hover:border-neutral-500 hover:shadow-xl active:scale-95",
+            ? "border-cyan-400/60 bg-gradient-to-br from-[#0a1520] via-[#0d1a2a] to-[#0a2030] shadow-[0_0_25px_rgba(0,229,255,0.2)]"
+            : "border-cyan-900/50 bg-gradient-to-br from-[#0a0f1a] via-[#0d1525] to-[#0a1a2a] hover:border-cyan-600/50 hover:shadow-[0_0_20px_rgba(0,229,255,0.15)] active:scale-95",
         ].join(" ")}
       >
-        <div className={`absolute left-2 top-2 text-xs font-bold ${isRed ? "text-red-500" : "text-white"}`}>
+        <div className={`absolute left-2 top-2 text-xs font-bold font-mono ${isRed ? "text-red-400" : "text-cyan-400"}`}>
           {rank}<br />{suit}
         </div>
         <div className="flex h-full flex-col items-center justify-center">
-          <span className={`text-4xl ${isRed ? "text-red-500/30" : "text-white/20"}`}>{suit}</span>
-          <span className="mt-2 text-[10px] text-neutral-500">
+          <span className={`text-4xl ${isRed ? "text-red-500/20" : "text-cyan-500/20"}`}>{suit}</span>
+          <span className="mt-2 text-[10px] font-mono text-cyan-700">
             {expanded ? "Fill stats ↓" : "Tap to play"}
           </span>
         </div>
-        <div className={`absolute bottom-2 right-2 rotate-180 text-xs font-bold ${isRed ? "text-red-500" : "text-white"}`}>
+        <div className={`absolute bottom-2 right-2 rotate-180 text-xs font-bold font-mono ${isRed ? "text-red-400" : "text-cyan-400"}`}>
           {rank}<br />{suit}
         </div>
       </button>
@@ -173,7 +173,7 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="mt-2 overflow-hidden rounded-xl bg-neutral-900 border border-neutral-800"
+            className="mt-2 overflow-hidden rounded-xl bg-[#0a1018] border border-cyan-900/40"
           >
             <div className="space-y-3 p-4">
               <input
