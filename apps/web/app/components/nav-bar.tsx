@@ -8,7 +8,7 @@ const navItems = [
   { href: "/", label: "Home", icon: "⚡" },
   { href: "/sports", label: "Sports", icon: "🎯" },
   { href: "/record", label: "Record", icon: "✏️" },
-  { href: "/history", label: "History", icon: "📊" },
+  { href: "/leaderboard", label: "Board", icon: "🏆" },
   { href: "/share", label: "Share", icon: "📤" },
 ];
 
