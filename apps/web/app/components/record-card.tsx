@@ -13,6 +13,7 @@ interface RecordCardProps {
 
 export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps) {
   const [expanded, setExpanded] = useState(false);
+  const [zoomed, setZoomed] = useState(false);
   const [saved, setSaved] = useState(!!savedData);
   const [name, setName] = useState(savedData?.name ?? "");
   const [values, setValues] = useState<Record<string, number>>(() =>
@@ -31,9 +32,86 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
   const rank = ranks[index];
   const isRed = suit === "♥" || suit === "♦";
 
+  // Zoom icon button (top-right of card)
+  const ZoomIcon = () => (
+    <button
+      onClick={(e) => { e.stopPropagation(); setZoomed(true); }}
+      className="absolute right-1.5 top-1.5 z-10 flex h-5 w-5 items-center justify-center rounded-md bg-neutral-800/80 text-[10px] text-neutral-400 hover:bg-neutral-700 hover:text-white transition-colors"
+      aria-label="Zoom card"
+    >
+      ⛶
+    </button>
+  );
+
+  // Zoomed modal overlay
+  const ZoomModal = () => (
+    <AnimatePresence>
+      {zoomed && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+          onClick={() => setZoomed(false)}
+        >
+          <motion.div
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.5, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            onClick={(e) => e.stopPropagation()}
+            className="relative h-[420px] w-[280px] rounded-2xl border-2 border-accent/50 bg-gradient-to-br from-neutral-900 to-neutral-950 p-6 shadow-2xl"
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setZoomed(false)}
+              className="absolute right-3 top-3 text-neutral-500 hover:text-white text-lg"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+
+            {/* Card content */}
+            <div className={`text-lg font-bold ${isRed ? "text-red-500" : "text-white"}`}>
+              {rank} {suit}
+            </div>
+
+            <div className="mt-6 flex flex-col items-center">
+              <span className={`text-6xl ${isRed ? "text-red-500/40" : "text-white/20"}`}>{suit}</span>
+              <span className="mt-3 text-xs uppercase tracking-widest text-neutral-500">{sport.name}</span>
+            </div>
+
+            {saved ? (
+              <div className="mt-6 space-y-2">
+                <p className="text-center text-sm font-medium text-accent">{name || "Player"}</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {sport.fields.map((f) => (
+                    <div key={f.name} className="rounded-lg bg-neutral-800 p-2 text-center">
+                      <div className="text-lg font-bold">{values[f.name] ?? 0}</div>
+                      <div className="text-[10px] text-neutral-500">{f.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="mt-10 text-center text-sm text-neutral-600">
+                No stats recorded yet.<br />Tap the card to add stats.
+              </div>
+            )}
+
+            <div className={`absolute bottom-4 right-4 rotate-180 text-lg font-bold ${isRed ? "text-red-500" : "text-white"}`}>
+              {rank} {suit}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+
   if (saved && !expanded) {
     return (
       <div className="relative">
+        <ZoomIcon />
         <button
           onClick={() => { setSaved(false); setExpanded(true); }}
           className="relative h-48 w-32 rounded-xl border-2 border-accent/40 bg-gradient-to-br from-neutral-900 to-neutral-950 p-3 shadow-lg hover:border-accent/70 active:scale-95 transition-all"
@@ -55,12 +133,14 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
             {rank}<br />{suit}
           </div>
         </button>
+        <ZoomModal />
       </div>
     );
   }
 
   return (
     <div className="relative">
+      <ZoomIcon />
       {/* Poker card face */}
       <button
         onClick={() => setExpanded(!expanded)}
@@ -135,6 +215,7 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
           </motion.div>
         )}
       </AnimatePresence>
+      <ZoomModal />
     </div>
   );
 }
