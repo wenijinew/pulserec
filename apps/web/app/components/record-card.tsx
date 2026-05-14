@@ -31,24 +31,30 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
   const rank = ranks[index];
   const isRed = suit === "♥" || suit === "♦";
 
-  if (saved) {
+  if (saved && !expanded) {
     return (
-      <div className="relative h-48 w-32 rounded-xl border-2 border-accent/40 bg-gradient-to-br from-neutral-900 to-neutral-950 p-3 shadow-lg">
-        <div className={`absolute left-2 top-2 text-xs font-bold ${isRed ? "text-red-500" : "text-white"}`}>
-          {rank}<br />{suit}
-        </div>
-        <div className="flex h-full flex-col items-center justify-center">
-          <span className="text-accent text-lg">✓</span>
-          <span className="mt-1 text-[10px] font-medium text-neutral-400">{name || "Saved"}</span>
-          <div className="mt-2 space-y-0.5 text-center">
-            {sport.fields.slice(0, 3).map((f) => (
-              <div key={f.name} className="text-[9px] text-neutral-500">{values[f.name]} {f.unit}</div>
-            ))}
+      <div className="relative">
+        <button
+          onClick={() => { setSaved(false); setExpanded(true); }}
+          className="relative h-48 w-32 rounded-xl border-2 border-accent/40 bg-gradient-to-br from-neutral-900 to-neutral-950 p-3 shadow-lg hover:border-accent/70 active:scale-95 transition-all"
+        >
+          <div className={`absolute left-2 top-2 text-xs font-bold ${isRed ? "text-red-500" : "text-white"}`}>
+            {rank}<br />{suit}
           </div>
-        </div>
-        <div className={`absolute bottom-2 right-2 rotate-180 text-xs font-bold ${isRed ? "text-red-500" : "text-white"}`}>
-          {rank}<br />{suit}
-        </div>
+          <div className="flex h-full flex-col items-center justify-center">
+            <span className="text-accent text-lg">✓</span>
+            <span className="mt-1 text-[10px] font-medium text-neutral-400">{name || "Saved"}</span>
+            <div className="mt-2 space-y-0.5 text-center">
+              {sport.fields.slice(0, 3).map((f) => (
+                <div key={f.name} className="text-[9px] text-neutral-500">{values[f.name]} {f.unit}</div>
+              ))}
+            </div>
+            <span className="mt-2 text-[8px] text-neutral-600">tap to edit</span>
+          </div>
+          <div className={`absolute bottom-2 right-2 rotate-180 text-xs font-bold ${isRed ? "text-red-500" : "text-white"}`}>
+            {rank}<br />{suit}
+          </div>
+        </button>
       </div>
     );
   }
