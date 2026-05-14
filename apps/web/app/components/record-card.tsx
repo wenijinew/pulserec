@@ -33,9 +33,6 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
 
   const cardContent = saved ? (
     <>
-      <div className="absolute left-2 top-2 text-[9px] font-bold font-mono text-cyan-500">
-        {code}<br />{glyph}
-      </div>
       <div className="flex h-full flex-col items-center justify-center">
         <span className="text-cyan-400 text-lg">✓</span>
         <span className="mt-1 text-[10px] font-mono font-medium text-cyan-300/70">{name || "Saved"}</span>
@@ -46,18 +43,12 @@ export function RecordCard({ index, sport, savedData, onSave }: RecordCardProps)
         </div>
         <span className="mt-2 text-[8px] text-cyan-800">tap to edit</span>
       </div>
-      <div className="absolute bottom-2 right-2 rotate-180 text-[9px] font-bold font-mono text-cyan-700">{glyph}</div>
     </>
   ) : (
     <>
-      <div className="absolute left-2 top-2 text-[9px] font-bold font-mono text-cyan-500">
-        {code}<br />{glyph}
-      </div>
       <div className="flex h-full flex-col items-center justify-center">
-        <span className="text-4xl text-cyan-500/20">{glyph}</span>
-        <span className="mt-2 text-[10px] font-mono text-cyan-700">Tap to play</span>
+        <span className="text-[10px] font-mono text-cyan-700">Tap to play</span>
       </div>
-      <div className="absolute bottom-2 right-2 rotate-180 text-[9px] font-bold font-mono text-cyan-700">{glyph}</div>
     </>
   );
 
